@@ -10,9 +10,10 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel-frontend-presets/now-ui-dashboard": "^1.0",
         "laravel/framework": "^8.75",
-        "laravel/sanctum": "^2.11",
+        "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.4"
+        "laravel/ui": "^3.4",
+        "doctrine/dbal": "v2.4.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

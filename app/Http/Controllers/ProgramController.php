@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Program;
 use Illuminate\Http\Request;
+use URL;
 
 class ProgramController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $data = Program::latest()->paginate(15);
@@ -21,97 +27,97 @@ class ProgramController extends Controller
 
     public function store(Request $request)
     {
-        $filename = $request->file('img_path');
-
-        ///// End Upload /////
-        $extension = $filename->getClientOriginalExtension();
-        $name_img = $filename->getClientOriginalName();
-        $uniqe_img = 'POSTER_'. uniqid() . '.' . $extension;
-        $dirpath = public_path('assets/Programs/');
-        $filename->move($dirpath, $uniqe_img);
-
-        $img_path = 'assets/Programs/'.$uniqe_img;
-        ///// End Upload /////
-
-        Program::create([
-            'program_id' => request('program_id'),
-            'program_name' => request('program_name'),
-            'date_start' => request('date_start'),
-            'date_end' => request('date_end'),
-            'page_link' => request('page_link'),
-            'img_path' => $img_path,
-            'status' => request('status'),
+        $validatedData = $request->validate([
+            'img_path' => 'required|image|mimes:jpeg,png,jpg|max:2000',
         ]);
-        
-        //success go to all list
-        return redirect('programs')->with('success', 'The event details is added successfully.');
-    }
 
-    public function show($program_id)
-    {
-        //
-    }
+        if($validatedData)
+        {
+            $filename = $request->file('img_path');
 
-    public function edit($program_id)
-    {
-        // $program = Program::findOrFail($program_id);
-        $program = Program::where('program_id',$program_id)->first();
-
-        return view('pages.programs.edit', compact('program'));
-    }
-
-    public function update(Request $request, $program_id)
-    {
-        $program = Program::where('program_id',$program_id)->first();
-
-        $filename = $request->file('img_path');
-        if($filename != '')
-        {  
             ///// End Upload /////
             $extension = $filename->getClientOriginalExtension();
             $name_img = $filename->getClientOriginalName();
             $uniqe_img = 'POSTER_'. uniqid() . '.' . $extension;
-            $dirpath = public_path('assets/Events/');
+            $dirpath = public_path('assets/Programs/');
             $filename->move($dirpath, $uniqe_img);
 
-            $img_path = 'assets/Events/'.$uniqe_img;
+            $img_path = '/assets/Programs/'.$uniqe_img;
             ///// End Upload /////
 
-            $program->program_id = $request->program_id;
-            $program->program_name = $request->program_name;
-            $program->date_start = $request->date_start;
-            $program->date_end = $request->date_end;
-            $program->page_link = $request->page_link;
-            $program->status = $request->status;
-            $program->img_path = $img_path;
+            Program::create([
+                'program_id' => strtoupper(request('program_id')),
+                'program_name' => ucwords(request('program_name')),
+                'date_start' => request('date_start'),
+                'date_end' => request('date_end'),
+                'page_link' => request('page_link'),
+                'img_path' => ''.URL::to('').$img_path.'',
+                'status' => request('status'),
+            ]);
+            
+            //success go to all list
+            return redirect('programs')->with('success', 'The program details is added successfully.');
+        }
+    }
 
-        } else {
+    public function show($id)
+    {
+        //
+    }
 
-            $program->program_id = $request->program_id;
-            $program->program_name = $request->program_name;
-            $program->date_start = $request->date_start;
-            $program->date_end = $request->date_end;
-            $program->page_link = $request->page_link;
-            $program->status = $request->status;
+    public function edit($id)
+    {
+        // $program = Program::findOrFail($program_id);
+        $program = Program::where('id',$id)->first();
+
+        return view('pages.programs.edit', compact('program'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $program = Program::where('id',$id)->first();
+
+        $program->program_id = strtoupper($request->program_id);
+        $program->program_name = ucwords($request->program_name);
+        $program->date_start = $request->date_start;
+        $program->date_end = $request->date_end;
+        $program->page_link = $request->page_link;
+        $program->status = $request->status;
+
+        $filename = $request->file('img_path');
+        if($filename != '')
+        {  
+            $validatedData = $request->validate([
+                'img_path' => 'required|image|mimes:jpeg,png,jpg|max:2000',
+            ]);
+    
+            if($validatedData)
+            {
+                ///// End Upload /////
+                $extension = $filename->getClientOriginalExtension();
+                $name_img = $filename->getClientOriginalName();
+                $uniqe_img = 'POSTER_'. uniqid() . '.' . $extension;
+                $dirpath = public_path('assets/Programs/');
+                $filename->move($dirpath, $uniqe_img);
+
+                $img_path = '/assets/Programs/'.$uniqe_img;
+                ///// End Upload /////
+
+                $program->img_path = ''.URL::to('').$img_path.'';
+            }
         }
 
         $program->save();
 
-        return redirect('program/edit/'.$program_id)->with('success', 'Event details is successfully updated.');
+        return redirect('program/edit/'.$id)->with('success', 'Program details is successfully updated.');
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Program  $program
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($program_id)
+    public function destroy($id)
     {
-        $del = Program::findOrFail($program_id);
+        $del = Program::findOrFail($id);
         $del->delete();
 
-        return redirect('programs')->with('success', 'Event is successfully deleted');
+        return redirect('programs')->with('success', 'Program is successfully deleted');
     }
 }

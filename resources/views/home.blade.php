@@ -1,276 +1,161 @@
-@extends('layouts.app', [
-    'namePage' => 'Dashboard',
-    'class' => 'login-page sidebar-mini ',
-    'activePage' => 'home',
-    'backgroundImage' => asset('now') . "/img/bg14.jpg",
-])
+@extends('layouts.app')
 
 @section('content')
-  <div class="panel-header panel-header-lg">
-    <canvas id="bigDashboardChart"></canvas>
-  </div>
+  <div class="panel-header panel-header-sm"></div>
+  
   <div class="content">
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="card card-chart">
+
+    <div class="row pt-12">
+      <!-- User Number -->
+      <div class="col-lg-3">
+        <div class="card card-chart bg-light">
           <div class="card-header">
-            <h5 class="card-category">Global Sales</h5>
-            <h4 class="card-title">Shipped Products</h4>
+            <p class="card-title">Registered User</p>
             <div class="dropdown">
               <button type="button" class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret" data-toggle="dropdown">
                 <i class="now-ui-icons loader_gear"></i>
               </button>
               <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <a class="dropdown-item text-danger" href="#">Remove Data</a>
+                <a class="dropdown-item" href="{{ route('users') }}">User List</a>
               </div>
             </div>
           </div>
-          <div class="card-body">
-            <div class="chart-area">
-              <canvas id="lineChartExample"></canvas>
-            </div>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
-            </div>
+          <div class="pb-3">
+            <h4 class="card-text text-center">{{ $userNum }}</h4>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
-        <div class="card card-chart">
+      <!-- End User Number -->
+
+      <!-- Event Number -->
+      <div class="col-lg-3">
+        <div class="card card-chart bg-light">
           <div class="card-header">
-            <h5 class="card-category">2018 Sales</h5>
-            <h4 class="card-title">All products</h4>
+            <p class="card-title">Total Event (Active)</p>
             <div class="dropdown">
               <button type="button" class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret" data-toggle="dropdown">
                 <i class="now-ui-icons loader_gear"></i>
               </button>
               <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <a class="dropdown-item text-danger" href="#">Remove Data</a>
+                <a class="dropdown-item" href="{{ route('programs') }}">Event List</a>
               </div>
             </div>
           </div>
-          <div class="card-body">
-            <div class="chart-area">
-              <canvas id="lineChartExampleWithNumbersAndGrid"></canvas>
-            </div>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
-            </div>
+          <div class="pb-3">
+            <h4 class="card-text text-center">{{ $proNum }}</h4>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
-        <div class="card card-chart">
+      <!-- End Event Number -->
+      
+      <!-- EBook Number -->
+      <div class="col-lg-3">
+        <div class="card card-chart bg-light">
           <div class="card-header">
-            <h5 class="card-category">Email Statistics</h5>
-            <h4 class="card-title">24 Hours Performance</h4>
-          </div>
-          <div class="card-body">
-            <div class="chart-area">
-              <canvas id="barChartSimpleGradientsNumbers"></canvas>
+            <p class="card-title">Total EBook</p>
+            <div class="dropdown">
+              <button type="button" class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret" data-toggle="dropdown">
+                <i class="now-ui-icons loader_gear"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{{ route('ebooks') }}">EBook List</a>
+              </div>
             </div>
           </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="now-ui-icons ui-2_time-alarm"></i> Last 7 days
+          <div class="pb-3">
+            <h4 class="card-text text-center">{{ $bookNum }}</h4>
+          </div>
+        </div>
+      </div>
+      <!-- End EBook Number -->
+
+      <!-- Product Number -->
+      <div class="col-lg-3">
+        <div class="card card-chart bg-light">
+          <div class="card-header">
+            <p class="card-title">Total Product</p>
+            <div class="dropdown">
+              <button type="button" class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret" data-toggle="dropdown">
+                <i class="now-ui-icons loader_gear"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{{ route('products') }}">Product List</a>
+              </div>
             </div>
+          </div>
+          <div class="pb-3">
+            <h4 class="card-text text-center">{{ $prodNum }}</h4>
+          </div>
+        </div>
+      </div>
+      <!-- End Product Number -->
+
+
+    </div>
+    
+    <div class="col-12">
+      <a class="btn btn-round btn-outline-default btn-simple btn-icon no-caret pull-right" href="{{ route('offers') }}" title="View All Promotion">
+        <i class="now-ui-icons loader_gear"></i>                                        
+      </a>
+      <h5 class="title">Overall Promotion</h5>
+      <hr class="half-rule"/>  
+      <div class="row">
+        @foreach($bygroup as $types)
+          <!-- Promo Number -->
+          <div class="col-lg-3">
+            <div class="card card-chart">
+              <div class="card-header">
+                <p class="card-title text-center">{{ $types->type }}</p>
+              </div>
+              <div class="pb-3">
+                <h4 class="card-title text-center">{{ $types->total }}</p>
+              </div>
+            </div>
+          </div>
+        <!-- End Promo Number -->
+        @endforeach
+
+        <!-- Active Promo Number -->
+        <div class="col-lg-3">
+          <div class="card card-chart bg-secondary text-white">
+            <div class="card-header">
+              <p class="card-title text-center">Total Promo (Active)</p>
+            </div>
+            <div class="pb-3">
+              <h4 class="card-title text-center">{{ $offerNum }}</p>
+            </div>
+          </div>
+        </div>
+        <!-- End Active Promo Number -->
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <!-- Show data in bar chart ----------------------------------------------->
+      <div class="card card-chart">
+        <div class="card-header">
+          <h4 class="card-title">Total Promotion Claimed by User {{$date->year}}</h4>
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas id="bigDashboardChart"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+        <div class="stats align-right">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card  card-tasks">
-          <div class="card-header ">
-            <h5 class="card-category">Backend development</h5>
-            <h4 class="card-title">Tasks</h4>
-          </div>
-          <div class="card-body ">
-            <div class="table-full-width table-responsive">
-              <table class="table">
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" checked>
-                          <span class="form-check-sign"></span>
-                        </label>
-                      </div>
-                    </td>
-                    <td class="text-left">Sign contract for "What are conference organizers afraid of?"</td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="" class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Edit Task">
-                        <i class="now-ui-icons ui-2_settings-90"></i>
-                      </button>
-                      <button type="button" rel="tooltip" title="" class="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Remove">
-                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox">
-                          <span class="form-check-sign"></span>
-                        </label>
-                      </div>
-                    </td>
-                    <td class="text-left">Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="" class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Edit Task">
-                        <i class="now-ui-icons ui-2_settings-90"></i>
-                      </button>
-                      <button type="button" rel="tooltip" title="" class="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Remove">
-                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" checked>
-                          <span class="form-check-sign"></span>
-                        </label>
-                      </div>
-                    </td>
-                    <td class="text-left">Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                    </td>
-                    <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="" class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Edit Task">
-                        <i class="now-ui-icons ui-2_settings-90"></i>
-                      </button>
-                      <button type="button" rel="tooltip" title="" class="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Remove">
-                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="card-footer ">
-            <hr>
-            <div class="stats">
-              <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="card-category">All Persons List</h5>
-            <h4 class="card-title"> Employees Stats</h4>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table">
-                <thead class=" text-primary">
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Country
-                  </th>
-                  <th>
-                    City
-                  </th>
-                  <th class="text-right">
-                    Salary
-                  </th>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      Dakota Rice
-                    </td>
-                    <td>
-                      Niger
-                    </td>
-                    <td>
-                      Oud-Turnhout
-                    </td>
-                    <td class="text-right">
-                      $36,738
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Minerva Hooper
-                    </td>
-                    <td>
-                      Curaçao
-                    </td>
-                    <td>
-                      Sinaai-Waas
-                    </td>
-                    <td class="text-right">
-                      $23,789
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Sage Rodriguez
-                    </td>
-                    <td>
-                      Netherlands
-                    </td>
-                    <td>
-                      Baileux
-                    </td>
-                    <td class="text-right">
-                      $56,142
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Doris Greene
-                    </td>
-                    <td>
-                      Malawi
-                    </td>
-                    <td>
-                      Feldkirchen in Kärnten
-                    </td>
-                    <td class="text-right">
-                      $63,542
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Mason Porter
-                    </td>
-                    <td>
-                      Chile
-                    </td>
-                    <td>
-                      Gloucester
-                    </td>
-                    <td class="text-right">
-                      $78,615
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    
+
+    
+  </div> 
+<script>
+  var xValues =  @json($labelist);
+  var yValues =  @json($number);
+</script>
 @endsection
 
 @push('js')

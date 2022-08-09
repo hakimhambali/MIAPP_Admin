@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ApplicableTo extends Model
+class OfferProduct extends Model
 {
     use HasFactory;
 
-    
-    protected $table = 'applicable_to';
+    protected $table = 'offer_product';
 
     protected $fillable = [
         'product_id',
